@@ -1,9 +1,15 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import ThemeProvider from "@/components/ui/theme-provider";
 import Head from "next/head";
 
-const inter = Inter({ subsets: ["latin"] });
+// Load both fonts
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["500", "700"],
+  variable: "--font-playfair",
+});
 
 export const metadata = {
   title: "SustainaCart",
@@ -12,8 +18,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
       <Head>
+        {/* Inject Google Fonts manually (for fallback) */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@500;700&display=swap"
+          rel="stylesheet"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -31,14 +42,8 @@ export default function RootLayout({ children }) {
           }}
         />
       </Head>
-      <body className={`${inter.className} bg-background text-foreground`}>
-        <ThemeProvider>
-          {/* Optional: Theme toggle button */}
-          {/* <div className="absolute top-4 right-4 z-50">
-            <ThemeToggle />
-          </div> */}
-          {children}
-        </ThemeProvider>
+      <body className="bg-background text-foreground font-sans">
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
